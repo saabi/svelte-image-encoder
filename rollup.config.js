@@ -14,19 +14,5 @@ export default [
 			resolve(),
 			svelte()
 		]
-	},
-
-	// tests
-	{
-		input: 'test/src/index.js',
-		output: {
-			file: 'test/public/bundle.js',
-			format: 'iife'
-		},
-		plugins: [
-			resolve(),
-			commonjs(),
-			svelte()
-		]
 	}
 ];
