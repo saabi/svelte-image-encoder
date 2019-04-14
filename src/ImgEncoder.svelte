@@ -8,6 +8,7 @@
 	export let height = 256;
 	export let realTime = false;
 	export let crossOrigin = false;
+	export let classes = '';
 	//export let showResult = true;
 
 	let canvas;
@@ -57,12 +58,12 @@
 
 	const pointers = [];
 	function iterationCopy(src) {
-  let target = {};
-  for (let prop in src) {
-      target[prop] = src[prop];
-  }
-  return target;
-}
+		let target = {};
+		for (let prop in src) {
+			target[prop] = src[prop];
+		}
+		return target;
+	}
 	function store_event(ev) {
 		for (var i = 0; i < pointers.length; i++) {
 			if (pointers[i].pointerId === ev.pointerId) {
@@ -103,7 +104,7 @@
 		e.cancelBubble = true;
 		store_event(e);
 	}
-	
+
 	function drag(e) {
 		//console.log(`${e.offsetX}, ${e.offsetY} - ${pointers.length}`)
 
@@ -172,7 +173,7 @@
 	}
 </script>
 
-<canvas bind:this={canvas} {width} {height} on:pointerdown={startDrag} on:pointerup={stopDrag} on:wheel={rescale} ></canvas>
+<canvas bind:this={canvas} {width} {height} on:pointerdown={startDrag} on:pointerup={stopDrag} on:wheel={rescale} class={classes}></canvas>
 
 <style>
 	canvas {
