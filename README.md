@@ -40,6 +40,7 @@ You can specify the following parameters:
 * `width` — The encoded image's width. Defaults to `256`.
 * `height` — The encoded image's height. Defaults to `256`.
 * `crossOrigin` — enables loading cross origin URLs. Defaults to `false`.
+* `classes` — Allows for theming by specifying global classes. Defaults to ``.
 
 ## Configuring webpack
 
