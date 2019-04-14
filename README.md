@@ -1,12 +1,13 @@
 # svelte-image-encoder ([demo](https://v3.svelte.technology/repl?version=3.0.0-beta.20&gist=cb1ec0dcc5dfaa1e0de3844f3e7348d6))
 
-A component for creating `data:` URLs in real time. You can also move and resize the image before encoding.
-
-The original intended use is for use in a profile picture editor, allowing the user to resize and crop 
-images, finally storing them in a small `data:` URL.
+A component for creating `data:` URLs from images in real time. You can also move and resize the image before encoding.
 
 The data URL enables sending and receiving the image inside JSON AJAX requests and perhaps storing images 
 in database string columns, where an image URL would go, simplifying code logic.
+
+The original intended use is for use in a profile picture editor, allowing the user to resize and crop 
+images, finally storing them in a small `data:` URL but it may be useful when you need basic image 
+resizing/cropping capabilities.
 
 ## Installation
 
