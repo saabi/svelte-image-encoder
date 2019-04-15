@@ -20,6 +20,17 @@
 	let scale = 1;
 	let minScale = 1;
 
+	onMount(  ()=> {
+		ctx = canvas.getContext('2d');
+		img = new Image();
+		img.onload = function() {
+			offsetX = 0;
+			offsetY = 0;
+			scale = minScale = Math.max(width/img.width, height/img.height);
+		};
+		canvas.onpointerup = stopDrag; 
+	});
+
 	function redraw() {
 		if (offsetX < 0)
 			offsetX = 0;
@@ -41,22 +52,14 @@
 		if (realTime || !dragging) url = canvas.toDataURL('image/jpeg', quality);
 	}
 
-	onMount(  ()=> {
-		ctx = canvas.getContext('2d');
-		img = new Image();
-		img.onload = function() {
-			offsetX = 0;
-			offsetY = 0;
-			scale = minScale = Math.max(width/img.width, height/img.height);
-		};
-		canvas.onpointerup = stopDrag; 
-	});
-
 	$: img && (img.crossOrigin = crossOrigin);
 	$: img && (img.src = src);
 	$: quality, width, height, offsetX, offsetY, scale, img && redraw();
 
-	const pointers = [];
+	// Firefox resets some properties in stored/cached 
+	// Event objects when new events are fired so
+	// we have to store a clone.
+	// TODO: Should we store the original object when using Chrome?
 	function iterationCopy(src) {
 		let target = {};
 		for (let prop in src) {
@@ -64,7 +67,9 @@
 		}
 		return target;
 	}
-	function store_event(ev) {
+
+	const pointers = [];
+	function storeEvent(ev) {
 		for (var i = 0; i < pointers.length; i++) {
 			if (pointers[i].pointerId === ev.pointerId) {
 				const ev2 = iterationCopy(ev);
@@ -75,7 +80,7 @@
 		if(i === pointers.length)
 			pointers.push(ev);
 	}
-	function remove_event(ev) {
+	function removeEvent(ev) {
 		for (var i = 0; i < pointers.length; i++) {
 			if (pointers[i].pointerId === ev.pointerId) {
 				pointers.splice(i, 1);
@@ -83,6 +88,7 @@
 			}
 		}
 	}
+
 	function updateScale(s, x, y) {
 		if (s < minScale) s = minScale;
 		offsetX = s * (offsetX + x)/scale - x;
@@ -102,9 +108,8 @@
 
 		e.preventDefault();
 		e.cancelBubble = true;
-		store_event(e);
+		storeEvent(e);
 	}
-
 	function drag(e) {
 		//console.log(`${e.offsetX}, ${e.offsetY} - ${pointers.length}`)
 
@@ -149,13 +154,13 @@
 
 		e.preventDefault();
 		e.cancelBubble = true;
-		store_event(e);
+		storeEvent(e);
 	}
 	function stopDrag(e) {
 		e.preventDefault();
 		e.cancelBubble = true;
 
-		remove_event(e);
+		removeEvent(e);
 
 		e.target.releasePointerCapture(e.pointerId);
 		if (pointers.length === 0) {

@@ -49,6 +49,10 @@ If you're using webpack with [svelte-loader](https://github.com/sveltejs/svelte-
 If you're using Rollup with [rollup-plugin-svelte](https://github.com/rollup/rollup-plugin-svelte), this will happen automatically.
 
 
+## TODO
+
+* Add a boolean property to choose between displaying the compressed or uncompressed result. Needs som reworking of the internals.
+
 ## License
 
 [ISC](LICENSE)
