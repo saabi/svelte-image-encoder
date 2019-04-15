@@ -7,3 +7,4 @@ index.mjs
 index.js
 test/public/bundle.js
 !test/src/index.js
+/.gtm/
