@@ -1,4 +1,5 @@
 <script>
+	import panHandler from './pan-zoom';
 	import { onMount } from 'svelte';
 
 	export let src;
@@ -9,7 +10,8 @@
 	export let realTime = false;
 	export let crossOrigin = false;
 	export let classes = '';
-	//export let showResult = true;
+	//export let showResult = true; 
+	//TODO: add support for optionally showing compressed result instead of original
 
 	let canvas;
 	let img;
@@ -19,17 +21,32 @@
 	let offsetY = 0;
 	let scale = 1;
 	let minScale = 1;
+	let dragging = false;
 
-	onMount(  ()=> {
-		ctx = canvas.getContext('2d');
-		img = new Image();
-		img.onload = function() {
-			offsetX = 0;
-			offsetY = 0;
-			scale = minScale = Math.max(width/img.width, height/img.height);
-		};
-		canvas.onpointerup = stopDrag; 
-	});
+	// not a POJO because getters/setters are instrumentable by Svelte
+	// and `transform` is updated by imported functions
+	let transform = {
+		get minScale() { // read only, TODO: maxScale
+			return minScale;
+		},
+		get scale() {
+			return scale;
+		},
+		set scale(s) {
+			scale = s;
+		},
+		get offset() {
+			return {x:offsetX, y:offsetY};
+		},
+		set offset(o) {
+			offsetX = o.x;
+			offsetY = o.y;
+		},
+		set dragging(d) {
+			if (!realTime) url = canvas.toDataURL('image/jpeg', quality);
+			dragging = d;
+		}
+	}
 
 	function redraw() {
 		if (offsetX < 0)
@@ -56,129 +73,19 @@
 	$: img && (img.src = src);
 	$: quality, width, height, offsetX, offsetY, scale, img && redraw();
 
-	// Firefox resets some properties in stored/cached 
-	// Event objects when new events are fired so
-	// we have to store a clone.
-	// TODO: Should we store the original object when using Chrome?
-	function iterationCopy(src) {
-		let target = {};
-		for (let prop in src) {
-			target[prop] = src[prop];
-		}
-		return target;
-	}
+	onMount( ()=> {
+		ctx = canvas.getContext('2d');
+		img = new Image();
+		img.onload = function() {
+			offsetX = 0;
+			offsetY = 0;
+			scale = minScale = Math.max(width/img.width, height/img.height);
+		};
+	});
 
-	const pointers = [];
-	function storeEvent(ev) {
-		for (var i = 0; i < pointers.length; i++) {
-			if (pointers[i].pointerId === ev.pointerId) {
-				const ev2 = iterationCopy(ev);
-				pointers[i] = ev2;
-				break;
-			}
-		}
-		if(i === pointers.length)
-			pointers.push(ev);
-	}
-	function removeEvent(ev) {
-		for (var i = 0; i < pointers.length; i++) {
-			if (pointers[i].pointerId === ev.pointerId) {
-				pointers.splice(i, 1);
-				break;
-			}
-		}
-	}
-
-	function updateScale(s, x, y) {
-		if (s < minScale) s = minScale;
-		offsetX = s * (offsetX + x)/scale - x;
-		offsetY = s * (offsetY + y)/scale - y;
-		scale = s;
-	}
-
-	let dragging = false;
-	let scaleOrigin;
-	function startDrag(e) {
-		//console.log(`${e.offsetX}, ${e.offsetY}`)
-		e.target.setPointerCapture(e.pointerId);
-		if (!dragging) {
-			e.target.onpointermove = drag;
-			dragging = true;
-		}
-
-		e.preventDefault();
-		e.cancelBubble = true;
-		storeEvent(e);
-	}
-	function drag(e) {
-		//console.log(`${e.offsetX}, ${e.offsetY} - ${pointers.length}`)
-
-		if (pointers.length === 1) { 
-			if (e.shiftKey) {//scale
-				if (!scaleOrigin)
-					scaleOrigin = {x: e.offsetX, y: e.offsetY, s: scale};
-				//console.log(scaleOrigin.y - e.offsetY)
-				updateScale(scaleOrigin.s + (scaleOrigin.y - e.offsetY)/50, scaleOrigin.x, scaleOrigin.y);
-				//updateScale(scaleOrigin.s + (pointers[0].offsetY - e.offsetY)/50, scaleOrigin.x, scaleOrigin.y);
-			}
-			else { //drag
-				//debugger;
-				scaleOrigin = null;
-				offsetX -= e.movementX;
-				offsetY -= e.movementY;
-				//console.log(`${pointers[0].offsetX}, ${pointers[0].offsetY}`)
-			}
-		}
-		else if (pointers.length === 2) { //scale
-			const x0 = pointers[0].offsetX;
-			const y0 = pointers[0].offsetY;
-			const x1 = pointers[1].offsetX;
-			const y1 = pointers[1].offsetY;
-			const x2 = e.offsetX;
-			const y2 = e.offsetY;
-			const dx = x0-x1;
-			const dy = y0-y1;
-			const l1 = Math.sqrt(dx*dx + dy*dy);
-			let dx1, dy1;
-			if (e.pointerId === pointers[0].pointerId) {
-				dx1 = x2 - x1;
-				dy1 = y2 - y1;
-			}
-			else {
-				dx1 = x2 - x0;
-				dy1 = y2 - y0;
-			}
-			var l2 = Math.sqrt(dx1*dx1+dy1*dy1);
-			updateScale(scale * l2/l1, x2, y2);
-		}
-
-		e.preventDefault();
-		e.cancelBubble = true;
-		storeEvent(e);
-	}
-	function stopDrag(e) {
-		e.preventDefault();
-		e.cancelBubble = true;
-
-		removeEvent(e);
-
-		e.target.releasePointerCapture(e.pointerId);
-		if (pointers.length === 0) {
-			dragging = false;
-			e.target.onpointermove = null;
-			scaleOrigin = null;
-		}
-		if (!realTime) url = canvas.toDataURL('image/jpeg', quality);
-	}
-	function rescale(e) {
-		e.preventDefault();
-		e.cancelBubble = true;
-		const delta = Math.sign(e.deltaY);
-		updateScale(scale - delta/10, e.offsetX, e.offsetY);
-	}
 </script>
 
-<canvas bind:this={canvas} {width} {height} on:pointerdown={startDrag} on:pointerup={stopDrag} on:wheel={rescale} class={classes}></canvas>
+<canvas bind:this={canvas} {width} {height} class={classes} use:panHandler={transform}></canvas>
 
 <style>
 	canvas {

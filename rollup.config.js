@@ -11,8 +11,9 @@ export default [
 			{ file: pkg.main, 'format': 'umd', name: 'ImgEncoder' }
 		],
 		plugins: [
-			resolve(),
-			svelte()
+			svelte(),
+			commonjs(),
+			resolve()
 		]
 	}
 ];

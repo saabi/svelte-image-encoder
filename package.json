@@ -11,6 +11,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
+    "detect-pointer-events": "^1.0.1",
     "rollup": "^1.6.0",
     "rollup-plugin-commonjs": "^9.1.0",
     "rollup-plugin-node-resolve": "^4.0.1",
