@@ -1,6 +1,8 @@
 import svelte from 'rollup-plugin-svelte';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import typescript from 'rollup-plugin-typescript2';
+const preprocessor = require('./src/preprocessor')
 import pkg from './package.json';
 
 export default [
@@ -11,7 +13,8 @@ export default [
 			{ file: pkg.main, 'format': 'umd', name: 'ImgEncoder' }
 		],
 		plugins: [
-			svelte(),
+			typescript(),
+			svelte({preprocess: preprocessor.preprocess}),
 			commonjs(),
 			resolve()
 		]

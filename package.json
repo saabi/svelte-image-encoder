@@ -12,12 +12,14 @@
   },
   "devDependencies": {
     "detect-pointer-events": "^1.0.1",
-    "rollup": "^1.6.0",
-    "rollup-plugin-commonjs": "^9.1.0",
-    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup": "^1.10.1",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-svelte": "^5.0.3",
     "serve-handler": "^6.0.0",
-    "svelte": "beta"
+    "svelte": "beta",
+    "typescript": "^3.4.5",
+    "rollup-plugin-typescript2": "^0.21.0"
   },
   "repository": "https://github.com/saabi/svelte-image-encoder",
   "author": "Sebastian Ferreyra Pons",
@@ -29,6 +31,7 @@
   ],
   "files": [
     "src",
+    "types",
     "index.mjs",
     "index.js"
   ]
