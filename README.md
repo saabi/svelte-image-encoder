@@ -12,9 +12,29 @@ resizing/cropping capabilities.
 ## Installation
 
 ```bash
-npm i svelte-image-encoder
+npm i svelte-image-encoder [-D]
 ```
 
+To build properly in a Svelte project, you must add the Typescript preprocessor included in the package.
+
+For example, if using Sapper with Rollup, in your `rollup.config.js` add the following:
+
+```javascript
+const preprocessor = require('svelte-image-encoder/src/preprocessor')
+export default {
+	client: {
+		plugins: [
+			svelte({
+				preprocess: preprocessor.preprocess
+      })
+    ]
+  }
+};
+```
+
+Something similar should be done with other build tools such as Webpack.
+
+In the next version I'll be using an independent preprocessor package to compile the Typescript soruce code.
 
 ## Usage
 

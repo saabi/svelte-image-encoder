@@ -33,6 +33,7 @@
     "src",
     "types",
     "index.mjs",
-    "index.js"
+    "index.js",
+    "tsconfig.json"
   ]
 }

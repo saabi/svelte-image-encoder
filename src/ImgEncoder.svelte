@@ -1,4 +1,4 @@
-<script src='./ImgEncoder.ts'></script>
+<script src='./ImgEncoder.ts' type='typescript'></script>
 
 <canvas bind:this={canvas} {width} {height} class={classes} use:panHandler={transform}></canvas>
 

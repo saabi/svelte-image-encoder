@@ -11,8 +11,12 @@ module.exports = {
         const filePath = path.resolve(path.dirname(filename), attributes.src)
         console.log(filename);
         transpiled = ts.transpileModule(fs.readFileSync(filePath).toString(), tsConfig)
-      } else {
+      } 
+      else if (attributes.type === 'typescript') {
         transpiled = ts.transpileModule(content, tsConfig)
+      }
+      else {
+          transpiled = content;
       }
       return {
         code: transpiled.outputText,
