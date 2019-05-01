@@ -40,6 +40,24 @@ function updateScale(transform:Transform, s: number, x: number, y: number) {
 	return s;
 }
 
+function simpleDragZoom(e: PointerEvent | MouseEvent, scaleOrigin: { x: number; y: number; s: number; } | null, transform: Transform) {
+	if (e.shiftKey) { //scale
+		if (!scaleOrigin)
+			scaleOrigin = { x: e.offsetX, y: e.offsetY, s: transform.getScale() };
+		transform.setScale(updateScale(transform, scaleOrigin.s + (scaleOrigin.y - e.offsetY) / 50, scaleOrigin.x, scaleOrigin.y));
+	}
+	else { //drag
+		scaleOrigin = null;
+		let offsetX = transform.getOffsetX();
+		let offsetY = transform.getOffsetY();
+		offsetX -= e.movementX;
+		offsetY -= e.movementY;
+		transform.setOffsetX(offsetX);
+		transform.setOffsetY(offsetY);
+	}
+	return scaleOrigin;
+}
+
 function withPointers(node: HTMLElement, transform: Transform) {
 	function rescaleWithWheel(e: MouseWheelEvent) {
 		e.preventDefault();
@@ -86,20 +104,7 @@ function withPointers(node: HTMLElement, transform: Transform) {
 
 	function drag(e: PointerEvent) {
 		if (pointers.length === 1) { 
-			if (e.shiftKey) {//scale
-				if (!scaleOrigin)
-					scaleOrigin = {x: e.offsetX, y: e.offsetY, s: transform.getScale()};
-				transform.setScale(updateScale(transform, scaleOrigin.s + (scaleOrigin.y - e.offsetY)/50, scaleOrigin.x, scaleOrigin.y));
-			}
-			else { //drag
-				scaleOrigin = null;
-				let offsetX = transform.getOffsetX();
-				let offsetY = transform.getOffsetY();
-				offsetX -= e.movementX;
-				offsetY -= e.movementY;
-				transform.setOffsetX(offsetX);
-				transform.setOffsetY(offsetY);
-			}
+			scaleOrigin = simpleDragZoom(e, scaleOrigin, transform);
 		}
 		else if (pointers.length === 2) { //scale
 			const x0 = pointers[0].offsetX;
@@ -175,20 +180,7 @@ function withMouse(node: HTMLElement, transform: Transform) {
 	}
 
 	function drag(e: MouseEvent) {
-		if (e.shiftKey) {//scale
-			if (!scaleOrigin)
-				scaleOrigin = {x: e.offsetX, y: e.offsetY, s: transform.getScale()};
-			transform.setScale(updateScale(transform, scaleOrigin.s + (scaleOrigin.y - e.offsetY)/50, scaleOrigin.x, scaleOrigin.y));
-		}
-		else { //drag
-			scaleOrigin = null;
-			let offsetX = transform.getOffsetX();
-			let offsetY = transform.getOffsetY();
-			offsetX -= e.movementX;
-			offsetY -= e.movementY;
-			transform.setOffsetX(offsetX);
-			transform.setOffsetY(offsetY);
-		}
+		scaleOrigin = simpleDragZoom(e, scaleOrigin, transform);
 
 		e.preventDefault();
 		e.cancelBubble = true;
