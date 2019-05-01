@@ -1,6 +1,6 @@
 {
   "name": "svelte-image-encoder",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A <ImgEncoder> Svelte component for editing and compressing profile pictures before upload to a server",
   "svelte": "src/ImgEncoder.svelte",
   "module": "index.mjs",
