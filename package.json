@@ -10,8 +10,10 @@
     "dev": "rollup -cw",
     "prepublishOnly": "npm run build"
   },
+  "dependencies": {
+    "detect-pointer-events": "^1.0.1"
+  },
   "devDependencies": {
-    "detect-pointer-events": "^1.0.1",
     "rollup": "^1.10.1",
     "rollup-plugin-commonjs": "^9.3.4",
     "rollup-plugin-node-resolve": "^4.2.3",
