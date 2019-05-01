@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+		"baseUrl": ".",
+		"paths": { "*": ["types/*"] },
+      "target": "ES2015",
+      "lib": ["dom", "es2015"],
+      "module": "ES2015",
+      "esModuleInterop": true,
+      "pretty": true,
+      "strict": true,
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "alwaysStrict": true,
+      "diagnostics": true,
+      "listFiles": true,
+      "listEmittedFiles": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "noFallthroughCasesInSwitch": true,
+      "sourceMap": true,
+      "allowSyntheticDefaultImports": true
+    },
+    "include": ["src/**/*.ts"]
+  }
