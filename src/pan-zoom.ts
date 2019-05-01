@@ -206,5 +206,8 @@ function withMouse(node: HTMLElement, transform: Transform) {
 	}
 }
 
-const usePointerEvents = !!detectPointerEvents.maxTouchPoints;
+declare module process {
+	export const browser: boolean;
+}
+const usePointerEvents = process.browser && !!detectPointerEvents.maxTouchPoints;
 export const panHandler = usePointerEvents ? withPointers : withMouse;
