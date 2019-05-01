@@ -33,7 +33,7 @@ let transform: Transform = {
     getScale() {
         return scale;
     },
-    setScale(s: number) {
+    setScale(s) {
         scale = s;
     },
     getOffsetX() {
@@ -42,10 +42,10 @@ let transform: Transform = {
     getOffsetY() {
         return offsetY;
     },
-    setOffsetX(ox: number) {
+    setOffsetX(ox) {
         offsetX = ox;
     },
-    setOffsetY(oy: number) {
+    setOffsetY(oy) {
         offsetY = oy;
     },
     setDragging(d) {
