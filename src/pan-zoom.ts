@@ -36,15 +36,14 @@ function updateScale(transform:Transform, s: number, x: number, y: number) {
 
 	transform.setOffsetX(offsetX);
 	transform.setOffsetY(offsetY);
-
-	return s;
+	transform.setScale(s);
 }
 
 function simpleDragZoom(e: PointerEvent | MouseEvent, scaleOrigin: { x: number; y: number; s: number; } | null, transform: Transform) {
 	if (e.shiftKey) { //scale
 		if (!scaleOrigin)
 			scaleOrigin = { x: e.offsetX, y: e.offsetY, s: transform.getScale() };
-		transform.setScale(updateScale(transform, scaleOrigin.s + (scaleOrigin.y - e.offsetY) / 50, scaleOrigin.x, scaleOrigin.y));
+		updateScale(transform, scaleOrigin.s + (scaleOrigin.y - e.offsetY) / 50, scaleOrigin.x, scaleOrigin.y);
 	}
 	else { //drag
 		scaleOrigin = null;
@@ -63,7 +62,7 @@ function withPointers(node: HTMLElement, transform: Transform) {
 		e.preventDefault();
 		e.cancelBubble = true;
 		const delta = Math.sign(e.deltaY);
-		transform.setScale(updateScale(transform, transform.getScale() - delta/10, e.offsetX, e.offsetY));
+		updateScale(transform, transform.getScale() - delta/10, e.offsetX, e.offsetY);
 	}
 
 	// pointer event cache
@@ -126,7 +125,7 @@ function withPointers(node: HTMLElement, transform: Transform) {
 				dy1 = y2 - y0;
 			}
 			var l2 = Math.sqrt(dx1*dx1+dy1*dy1);
-			transform.setScale(updateScale(transform, transform.getScale() * l2/l1, x2, y2)); 
+			updateScale(transform, transform.getScale() * l2/l1, x2, y2); 
 		}
 
 		e.preventDefault();
@@ -163,7 +162,7 @@ function withMouse(node: HTMLElement, transform: Transform) {
 		e.preventDefault();
 		e.cancelBubble = true;
 		const delta = Math.sign(e.deltaY);
-		transform.setScale(updateScale(transform, transform.getScale() - delta/10, e.offsetX, e.offsetY));
+		updateScale(transform, transform.getScale() - delta/10, e.offsetX, e.offsetY);
 	}
 
 	let scaleOrigin: {x: number, y: number, s: number} | null = null;
