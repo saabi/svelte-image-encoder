@@ -1,4 +1,4 @@
-# svelte-image-encoder ([demo](https://v3.svelte.technology/repl?version=3.0.0-beta.20&gist=cb1ec0dcc5dfaa1e0de3844f3e7348d6))
+# svelte-image-encoder ([demo](https://svelte.dev/repl/cb1ec0dcc5dfaa1e0de3844f3e7348d6))
 
 A component for creating `data:` URLs from images in real time. You can also move and resize the image before encoding.
 
