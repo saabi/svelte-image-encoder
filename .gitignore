@@ -8,3 +8,4 @@ package-lock.json
 test/public/bundle.js
 !test/src/index.js
 /.gtm/
+/.rpt2_cache/
