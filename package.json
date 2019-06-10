@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -cw",
+    "build:dev": "rollup -c rollup.dev.config.js",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
