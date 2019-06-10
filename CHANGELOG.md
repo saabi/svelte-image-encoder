@@ -1,5 +1,13 @@
 # svelte-subdivide changelog
 
+## 1.2.4
+
+* Now captures `mouseup` events outside of element.
+
+## 1.2.3
+
+* Now uses more reliable code to detect if running in a browser.
+
 ## 1.2.2
 
 * Removed Typescript from component source code.
