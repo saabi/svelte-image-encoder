@@ -171,6 +171,7 @@ function withMouse(node: HTMLElement, transform: Transform) {
 			(<any>node).setCapture();
 		if (!transform.getDragging()) {
 			node.addEventListener('mousemove', drag, true);
+			window.addEventListener('mouseup', stopDrag, true);
 			transform.setDragging(true);
 		}
 
@@ -192,6 +193,7 @@ function withMouse(node: HTMLElement, transform: Transform) {
 			(<any>node).releaseCapture();
 		transform.setDragging(false);
 		node.removeEventListener('mousemove', drag, true);
+		window.removeEventListener('mouseup', stopDrag, true);
 		scaleOrigin = null;
 	}
 
