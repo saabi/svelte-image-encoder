@@ -3,7 +3,7 @@ import detectPointerEvents from 'detect-pointer-events';
 export interface Transform {
 	getMinScale(): number;
 	getScale(): number;
-	setScale(s: number): void; 
+	setScale(s: number): void;
 	getOffsetX(): number;
 	getOffsetY(): number;
 	setOffsetX(o: number): void;
@@ -12,7 +12,7 @@ export interface Transform {
 	getDragging(): boolean;
 }
 
-// Firefox resets some properties in stored/cached 
+// Firefox resets some properties in stored/cached
 // Event objects when new events are fired so
 // we have to store a clone.
 // TODO: Should we store the original object when using Chrome?
@@ -102,7 +102,7 @@ function withPointers(node: HTMLElement, transform: Transform) {
 	}
 
 	function drag(e: PointerEvent) {
-		if (pointers.length === 1) { 
+		if (pointers.length === 1) {
 			scaleOrigin = simpleDragZoom(e, scaleOrigin, transform);
 		}
 		else if (pointers.length === 2) { //scale
@@ -125,7 +125,7 @@ function withPointers(node: HTMLElement, transform: Transform) {
 				dy1 = y2 - y0;
 			}
 			var l2 = Math.sqrt(dx1*dx1+dy1*dy1);
-			updateScale(transform, transform.getScale() * l2/l1, x2, y2); 
+			updateScale(transform, transform.getScale() * l2/l1, x2, y2);
 		}
 
 		e.preventDefault();

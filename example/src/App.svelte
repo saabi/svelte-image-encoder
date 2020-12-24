@@ -1,5 +1,5 @@
 <script>
-	import ImgEncoder from '../src/ImgEncoder.svelte';
+	import ImgEncoder from '../../dist/ImgEncoder.svelte';
 
 	let src = 'https://i.imgur.com/37nlxAP.jpg';
 
@@ -38,5 +38,3 @@
 		margin: 1em;
 	}
 </style>
-
-
