@@ -150,10 +150,12 @@ function withPointers(node: HTMLElement, transform: Transform) {
 	node.addEventListener(detectPointerEvents.prefix('pointerup'), stopDrag, true);
 	node.addEventListener('wheel', rescaleWithWheel, true);
 
-	return () => {
-		node.removeEventListener(detectPointerEvents.prefix('pointerdown'), startDrag, true);
-		node.removeEventListener(detectPointerEvents.prefix('pointerup'), stopDrag, true);
-		node.removeEventListener('wheel', rescaleWithWheel, true);
+	return {
+		destroy: () => {
+			node.removeEventListener(detectPointerEvents.prefix('pointerdown'), startDrag, true);
+			node.removeEventListener(detectPointerEvents.prefix('pointerup'), stopDrag, true);
+			node.removeEventListener('wheel', rescaleWithWheel, true);
+		},
 	}
 }
 
@@ -201,10 +203,12 @@ function withMouse(node: HTMLElement, transform: Transform) {
 	node.addEventListener('mouseup', stopDrag, true);
 	node.addEventListener('wheel', rescaleWithWheel, true);
 
-	return () => {
-		node.removeEventListener('mousedown', startDrag, true);
-		node.removeEventListener('mouseup', stopDrag, true);
-		node.removeEventListener('wheel', rescaleWithWheel, true);
+	return {
+		destroy: () => {
+			node.removeEventListener('mousedown', startDrag, true);
+			node.removeEventListener('mouseup', stopDrag, true);
+			node.removeEventListener('wheel', rescaleWithWheel, true);
+		},
 	}
 }
 
