@@ -1,1 +1,1 @@
-export { default as ImgEncoder } from "./ImgEncoder.svelte";
+export { default } from "./ImgEncoder.svelte";
