@@ -3,9 +3,9 @@ node_modules
 yarn.lock
 yarn-error.log
 package-lock.json
-/index.mjs
-/index.js
 test/public/bundle.js
 !test/src/index.js
 /.gtm/
 /.rpt2_cache/
+/dist/
+
