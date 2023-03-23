@@ -1,5 +1,9 @@
 # svelte-image-encoder ([demo](https://svelte.dev/repl/cb1ec0dcc5dfaa1e0de3844f3e7348d6))
 
+> This repos is now considered deprecated and is superseded by 
+> [svelte-image-input](https://github.com/saabi/svelte-image-input), which 
+> supports more features such as image loading, dropping and pasting.
+
 A component for creating `data:` URLs from images in real time. You can also move and resize the image before encoding.
 
 The data URL enables sending and receiving the image inside JSON AJAX requests and perhaps storing images 
